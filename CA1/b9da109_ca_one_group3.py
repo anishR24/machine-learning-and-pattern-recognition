@@ -36,6 +36,9 @@ Original file is located at
 
 import numpy as np
 import random
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
 from sklearn.metrics import precision_recall_fscore_support
 
 import spacy
@@ -115,7 +118,7 @@ def parse_data(data):
           docs.append(current)
           current = {"text": "", "entities": []}
 
-  return docs # ("Document text", [(start1, end1, type1), (start2, end2, type2)])
+  return docs #("Document text", [(start1, end1, type1), (start2, end2, type2)])
 
 train = parse_data(train_path)
 dev = parse_data(dev_path)
@@ -137,7 +140,43 @@ for i, doc in enumerate(train_dev[:1]):
 
 """# **Exploratory Data Analysis (EDA)**"""
 
-#TODO
+num_docs = len(train_dev)
+print("Total number of documents:", num_docs)
+
+# Number of characters per document
+doc_lengths = [len(doc["text"]) for doc in train_dev]
+avg_length = sum(doc_lengths) / num_docs
+print("Average document length (characters):", round(avg_length, 2))
+
+# Number of entities per document
+num_entities = [len(doc["entities"]) for doc in train_dev]
+avg_entities = sum(num_entities) / num_docs
+print("Average number of entities per document:", round(avg_entities, 2))
+
+# Histogram for the distribution of entities per document
+plt.figure(figsize=(8, 6))
+sns.histplot(num_entities, bins=20, kde=True, color="skyblue")
+plt.xlabel("Number of Entities per Document")
+plt.ylabel("Frequency")
+plt.title("Distribution of Entities per Document")
+plt.show()
+
+# Frequency distribution of entity labels
+label_counts = {}
+for doc in train_dev:
+    for ent in doc["entities"]:
+        label = ent[2]
+        label_counts[label] = label_counts.get(label, 0) + 1
+
+# Bar chart for entity label frequencies
+labels = list(label_counts.keys())
+counts = list(label_counts.values())
+plt.figure(figsize=(8, 6))
+sns.barplot(x=labels, y=counts, palette="viridis")
+plt.xlabel("Entity Label")
+plt.ylabel("Count")
+plt.title("Frequency Distribution of Entity Labels")
+plt.show()
 
 """# **Defining Rule-Based Matcher**"""
 
