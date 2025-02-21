@@ -35,11 +35,12 @@ Original file is located at
 !pip install -U spacy
 
 import numpy as np
-import random
 import pandas as pd
+import random
 import matplotlib.pyplot as plt
 import seaborn as sns
 from sklearn.metrics import precision_recall_fscore_support
+from collections import Counter
 
 import spacy
 from spacy.matcher import Matcher #more flexible than EntityRuler
@@ -66,7 +67,7 @@ def load_data(path):
   Reads and loads data from given file path.
 
   Args:
-      path (str): The file path of the dataset.
+      path: The file path of the dataset.
 
   Returns:
       list: A list containing each line of the file as a string.
@@ -88,7 +89,7 @@ def parse_data(data):
   Parses PubTator formatted dataset to extract text and entity annotations.
 
   Args:
-      data (list): List of lines from the dataset.
+      data: List of lines from the dataset.
 
   Returns:
       list: A list of tuples where each tuple contains:
@@ -147,6 +148,12 @@ print("Total number of documents:", num_docs)
 doc_lengths = [len(doc["text"]) for doc in train_dev]
 avg_length = sum(doc_lengths) / num_docs
 print("Average document length (characters):", round(avg_length, 2))
+
+# unique labels and their counts
+label_counter = Counter(entity[2] for doc in train_dev for entity in doc["entities"])
+print("Unique Entity Labels and Their Counts:")
+for label, count in label_counter.items():
+    print(f"{label}: {count}")
 
 # Number of entities per document
 num_entities = [len(doc["entities"]) for doc in train_dev]
@@ -222,7 +229,7 @@ def apply_rules(text):
   Applies the matcher to a text and sets the detected entities.
 
   Args:
-      text (str): The input text to annotate.
+      text: The input text to annotate.
 
   Returns:
       spacy.tokens.Doc: The processed doc with entities set.
@@ -293,7 +300,7 @@ def train_ner_model(model, data, n_iter=10):
       losses = {}
       batches = spacy.util.minibatch(training_examples, size=4)
       for batch in batches:
-          model.update(batch, drop=0.5, sgd=optimizer, losses=losses)
+          model.update(batch, drop=0.3, sgd=optimizer, losses=losses)
       print(f"Iteration {i+1}, Loss: {losses.get('ner', 0):.4f}")
 
   print("\nModel Training Completed!")
@@ -349,10 +356,10 @@ def active_learning_loop(model, data, iterations=3, n_samples=5):
   Runs an active learning loop to iteratively improve the model.
 
   Args:
-      model (spacy.Language): The spaCy NLP model.
-      data (list): The training data (list of document dictionaries).
-      iterations (int): Number of active learning iterations.
-      n_samples (int): Number of uncertain samples to select in each iteration.
+      model: The spaCy NLP model.
+      data: The training data (list of document dictionaries).
+      iterations: Number of active learning iterations.
+      n_samples: Number of uncertain samples to select in each iteration.
 
   Returns:
       None: The function updates the model and data in place.
@@ -380,7 +387,7 @@ def active_learning_loop(model, data, iterations=3, n_samples=5):
     print("New annotations added.")
 
     # Retrain the model with the updated data
-    train_ner_model(model, data, n_iter=5)
+    train_ner_model(model, data, n_iter=10)
     model_path = f"model_iteration_{i+1}"
     model.to_disk(model_path)
 
@@ -400,8 +407,8 @@ def evaluate_model(model, test_data):
   Evaluates the trained NER model on the test data.
 
   Args:
-      model (spacy.Language): The trained spaCy model.
-      test_data (list): The test data, a list of document dictionaries.
+      model: The trained spaCy model.
+      test_data: The test data, a list of document dictionaries.
 
   Returns:
       tuple: A tuple containing precision, recall, and F1-score.
@@ -443,24 +450,25 @@ def evaluate_model(model, test_data):
   print(f"Precision: {precision:.4f}, Recall: {recall:.4f}, F1-Score: {f1:.4f}")
   return precision, recall, f1
 
-"""## Execution"""
+"""# Execution"""
 
 evaluate_model(nlp, test)
 
 """# **Conclusion:**
-**Precision: 0.8299**
+**Precision: 0.8484**
 
-When the model predicts an entity, there is about an 83% chance that the prediction is correct
-
----
-**Recall: 0.7322**
-
-The model successfully identifies about 73% of the actual entities present in the text.
-
- Roughly 27% of the true entities are being missed.
+When the model predicts an entity, there is about an 85% chance that the prediction is correct.
 
 ---
-**F1-Score: 0.7780**
+**Recall: 0.8049**
 
-The F1-score is around 78%, reflecting a strong balance between prediction accuracy (precision) and entity capture (recall).
+The model successfully identifies about 80% of the actual entities present in the text.
+
+Roughly 20% of the true entities are being missed.
+
+---
+**F1-Score: 0.8261**
+
+The F1-score is around 83%, reflecting a strong balance between prediction accuracy (precision) and entity capture (recall).
+
 """
