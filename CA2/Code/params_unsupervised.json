@@ -1,0 +1,525 @@
+{
+    "realTraffic/speed_7578.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 50,
+        "lr": 0.0007,
+        "conf": 0.88,
+        "dropout": 0.3
+    },
+    "realAWSCloudwatch/iio_us-east-1_i-a2eb1cd9_NetworkIn.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 50,
+        "lr": 0.0007,
+        "conf": 0.88,
+        "dropout": 0.3
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_825cc2.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_24ae8d.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_53ea38.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_5f5533.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_77c1ca.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_ac20cd.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_c6585a.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_cpu_utilization_fe7f93.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_disk_write_bytes_c0d644.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_network_in_257a54.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/elb_request_count_8c0756.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/rds_cpu_utilization_cc0c53.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/rds_cpu_utilization_e47b3b.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialWithAnomaly/art_daily_flatmiddle.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialWithAnomaly/art_daily_jumpsdown.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialWithAnomaly/art_daily_jumpsup.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialWithAnomaly/art_daily_nojump.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialWithAnomaly/art_increase_spike_density.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialWithAnomaly/art_load_balancer_spikes.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realKnownCause/ec2_request_latency_system_failure.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialNoAnomaly/art_daily_no_noise.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialNoAnomaly/art_daily_perfect_square_wave.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialNoAnomaly/art_daily_small_noise.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialNoAnomaly/art_noisy.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "artificialNoAnomaly/art_flatline.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realAWSCloudwatch/ec2_disk_write_bytes_1ef3de.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 30,
+        "lr": 0.0008,
+        "conf": 0.88,
+        "dropout": 0.25
+    },
+    "realAWSCloudwatch/ec2_network_in_5abac7.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 30,
+        "lr": 0.0008,
+        "conf": 0.88,
+        "dropout": 0.25
+    },
+    "realAWSCloudwatch/grok_asg_anomaly.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 30,
+        "lr": 0.0008,
+        "conf": 0.88,
+        "dropout": 0.25
+    },
+    "realTraffic/speed_t4013.csv": {
+      "probation_ratio": 0.15,
+      "calib_ratio": 0.1,
+      "window_size": 10,
+      "epochs": 40,
+      "lr": 0.0008,
+      "conf": 0.90,
+      "dropout": 0.3
+    },
+    "realTraffic/TravelTime_387.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 40,
+        "lr": 0.0008,
+        "conf": 0.90,
+        "dropout": 0.3
+    },
+    "realTraffic/speed_6005.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 40,
+        "lr": 0.0008,
+        "conf": 0.90,
+        "dropout": 0.3
+    },
+    "realTraffic/occupancy_t4013.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 40,
+        "lr": 0.0008,
+        "conf": 0.90,
+        "dropout": 0.3
+    },
+    "realAdExchange/exchange-2_cpm_results.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 25,
+        "lr": 0.001,
+        "conf": 0.85,
+        "dropout": 0.25
+    },
+    "realAdExchange/exchange-2_cpc_results.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 25,
+        "lr": 0.001,
+        "conf": 0.85,
+        "dropout": 0.25
+    },
+    "realAdExchange/exchange-4_cpm_results.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 25,
+        "lr": 0.001,
+        "conf": 0.85,
+        "dropout": 0.25
+    },
+    "realAdExchange/exchange-4_cpc_results.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 25,
+        "lr": 0.001,
+        "conf": 0.85,
+        "dropout": 0.25
+    },
+    "realAdExchange/exchange-3_cpm_results.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.75,
+        "dropout": 0.1
+    },
+    "realAdExchange/exchange-3_cpc_results.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 20,
+        "lr": 0.0001,
+        "conf": 0.75,
+        "dropout": 0.1
+    },
+    "realKnownCause/rogue_agent_key_hold.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.80,
+        "dropout": 0.1
+    },
+    "realTraffic/TravelTime_451.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 10,
+        "epochs": 30,
+        "lr": 0.001,
+        "conf": 0.80,
+        "dropout": 0.5
+    },
+    "realTraffic/occupancy_6005.csv": {
+        "probation_ratio": 0.15,
+        "calib_ratio": 0.1,
+        "window_size": 15,
+        "epochs": 20,
+        "lr": 0.0008,
+        "conf": 0.75,
+        "dropout": 0.2
+    },
+    "realKnownCause/rogue_agent_key_updown.csv": {
+        "probation_ratio": 0.14,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0007,
+        "conf": 0.85,
+        "dropout": 0.1
+    },
+    "realKnownCause/ambient_temperature_system_failure.csv": {
+        "probation_ratio": 0.10,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0007,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realKnownCause/nyc_taxi.csv": {
+        "probation_ratio": 0.07,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0007,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_AAPL.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_AMZN.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_FB.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_GOOG.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_KO.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_CVS.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_PFE.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_UPS.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_IBM.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realTweets/Twitter_volume_CRM.csv": {
+        "probation_ratio": 0.047,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.1
+    },
+    "realKnownCause/cpu_utilization_asg_misconfiguration.csv": {
+        "probation_ratio": 0.041,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.0005,
+        "conf": 0.95,
+        "dropout": 0.2
+    },
+    "realKnownCause/machine_temperature_system_failure.csv": {
+        "probation_ratio": 0.032,
+        "calib_ratio": 0.1,
+        "window_size": 50,
+        "epochs": 30,
+        "lr": 0.001,
+        "conf": 0.95,
+        "dropout": 0.2
+    }
+}
+  
