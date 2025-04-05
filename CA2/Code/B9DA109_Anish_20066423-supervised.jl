@@ -130,6 +130,8 @@ function train_model(x_train::Array{Float32, 3}, y_train::Array{Float32,2};
         Flux.update!(opt_state, model, grads[1])
         println("Epoch $epoch -- Loss: $(round(loss, digits=4))")
     end
+    
+    return model
 end
 ```
 ---------------------------------- CONFORMAL CLASSIFICATION  ----------------------------------
@@ -158,7 +160,7 @@ end
 ```
 ---------------------------------- EVALUATION ----------------------------------
 ```
-function compute_metrics(y_true::Vector{Int}, y_pred::BitVector)
+function compute_metrics(filename:: String, y_true::Vector{Int}, y_pred::BitVector)
     TP = sum((y_true .== 1) .& (y_pred .== true))
     FP = sum((y_true .== 0) .& (y_pred .== true))
     FN = sum((y_true .== 1) .& (y_pred .== false))
@@ -167,7 +169,7 @@ function compute_metrics(y_true::Vector{Int}, y_pred::BitVector)
     recall = TP + FN == 0 ? 0.0 : TP / (TP + FN)
     f1 = precision + recall == 0 ? 0.0 : 2 * (precision * recall) / (precision + recall)
 
-    println("\nEvaluation Metrics:")
+    println("\nEvaluation Metrics for $filename")
     println("TP = $TP | FP = $FP | FN = $FN")
     println("Precision: $(round(precision * 100, digits=2))%")
     println("Recall:    $(round(recall * 100, digits=2))%")
@@ -233,7 +235,7 @@ for filename in all_files
     clean_data = split_and_normalize(values, labels, train_ratio, calib_ratio)
 
     # Create sequences
-    x_train, y_train = create_sequences(clean_data.train_values_norm, clean_data.train_labels, window_size)
+    x_train, y_train = create_sequences(clean_data.train_values, clean_data.train_labels, window_size)
     x_calib, y_calib = create_sequences(clean_data.calib_values, clean_data.calib_labels, window_size)
     x_test, y_test = create_sequences(clean_data.test_values, clean_data.test_labels, window_size)
 
@@ -258,7 +260,7 @@ for filename in all_files
     # Evaluation
     y_true = Int.(vec(y_test))
     y_pred = vec(y_pred_class)
-    metrics = compute_metrics(y_true, y_pred)
+    metrics = compute_metrics(filename, y_true, y_pred)
 
     # Save metrics
     save_metrics(filename, metrics)

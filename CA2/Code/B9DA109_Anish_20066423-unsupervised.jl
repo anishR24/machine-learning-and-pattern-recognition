@@ -160,7 +160,7 @@ function load_true_labels(label_path::String, file_key::String,
 
     label_data = JSON.parsefile(label_path)
     windows = label_data[file_key]
-    
+
     datetime_format = dateformat"yyyy-MM-dd HH:MM:SS.ssss"
     anomaly_windows = [(DateTime(w[1], datetime_format), 
     DateTime(w[2], datetime_format)) for w in windows]
@@ -174,7 +174,7 @@ function load_true_labels(label_path::String, file_key::String,
     return true_flags
 end
 
-function compute_metrics(pred_flags::Vector{Int}, true_flags::Vector{Int})
+function compute_metrics(filename::String, pred_flags::Vector{Int}, true_flags::Vector{Int})
     TP = sum(z -> z[1] == 1 && z[2] == 1, zip(pred_flags, true_flags))
     FP = sum(z -> z[1] == 1 && z[2] == 0, zip(pred_flags, true_flags))
     FN = sum(z -> z[1] == 0 && z[2] == 1, zip(pred_flags, true_flags))
@@ -287,7 +287,7 @@ for filename in all_files
     ts_eval = ts[n_prob + window_size + 1 : end]
 
     true_flags = load_true_labels(label_path, filename, ts_eval)
-    metrics = compute_metrics(eval_results.anomaly_flags, true_flags)
+    metrics = compute_metrics(filename, eval_results.anomaly_flags, true_flags)
 
     # Save model & metrics
     # save_model(model, filename)
