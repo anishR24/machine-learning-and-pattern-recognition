@@ -175,13 +175,13 @@ function load_true_labels(label_path::String, file_key::String,
 end
 
 function compute_metrics(filename::String, pred_flags::Vector{Int}, true_flags::Vector{Int})
-    TP = sum(z -> z[1] == 1 && z[2] == 1, zip(pred_flags, true_flags))
-    FP = sum(z -> z[1] == 1 && z[2] == 0, zip(pred_flags, true_flags))
-    FN = sum(z -> z[1] == 0 && z[2] == 1, zip(pred_flags, true_flags))
+    TP = sum((pred_flags .== 1) .& (true_flags .== 1))
+    FP = sum((pred_flags .== 1) .& (true_flags .== 0))
+    FN = sum((pred_flags .== 0) .& (true_flags .== 1))
 
-    precision = TP / (TP + FP + 1e-8)
-    recall    = TP / (TP + FN + 1e-8)
-    f1        = 2 * (precision * recall) / (precision + recall + 1e-8)
+    precision = TP + FP == 0 ? 0.0 : TP / (TP + FP)
+    recall    = TP + FN == 0 ? 0.0 : TP / (TP + FN)
+    f1        = precision + recall == 0 ? 0.0 : 2 * (precision * recall) / (precision + recall)
 
     println("\nEvaluation Metrics for $filename")
     println("TP = $TP | FP = $FP | FN = $FN")
