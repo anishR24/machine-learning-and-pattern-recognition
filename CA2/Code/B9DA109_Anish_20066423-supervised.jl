@@ -38,20 +38,19 @@ end
 ---------------------------------- DATA LOADING ----------------------------------
 ```
 function load_data_with_labels(filepath::String, labelpath::String)
-    label_data = JSON.parsefile(labelpath)
+    all_labels = JSON.parsefile(labelpath)
     dataset_key = joinpath(splitpath(filepath)[end-1:end]...)
     
     df = CSV.read(filepath, DataFrame)
     timestamps = DateTime.(df.timestamp, dateformat"yyyy-MM-dd HH:MM:SS")
     values = Float32.(df.value)
 
-    anomaly_windows = get(label_data, dataset_key, [])
-    datetime_format = "yyyy-MM-dd HH:MM:SS.ssss"
+    anomaly_windows = get(all_labels, dataset_key, [])
     
     labels = Vector{Int}(undef, length(timestamps))
     for (i, ts) in enumerate(timestamps)
-        labels[i] = any(DateTime(w[1], datetime_format) <= ts <= 
-        DateTime(w[2], datetime_format) for w in anomaly_windows) ? 1 : 0
+        labels[i] = any(DateTime(w[1], dateformat"yyyy-MM-dd HH:MM:SS.ssss") <= ts <= 
+        DateTime(w[2], dateformat"yyyy-MM-dd HH:MM:SS.ssss") for w in anomaly_windows) ? 1 : 0
     end
 
     return timestamps, values, labels
@@ -88,7 +87,7 @@ end
 ```
 ---------------------------------- DATA SEQUENCING ----------------------------------
 ```
-function create_sequences(values::Vector{Float32}, labels::Vector{Int}, window_size::Int)
+function split_windows(values::Vector{Float32}, labels::Vector{Int}, window_size::Int)
     n_seq = length(values) - window_size
     x = Array{Float32}(undef, window_size, 1, n_seq)
     y = Array{Float32}(undef, 1, n_seq)
@@ -103,7 +102,7 @@ end
 ```
 ---------------------------------- MODEL TRAINING ----------------------------------
 ```
-function build_model(window_size::Int, dropout::Float64)
+function setup_model(window_size::Int, dropout::Float64)
     return Chain(
         LSTM(window_size => 64),
         Dropout(dropout),
@@ -115,7 +114,7 @@ end
 function train_model(x_train::Array{Float32, 3}, y_train::Array{Float32,2};
     window_size::Int, epochs::Int, lr::Float64, dropout::Float64)
     
-    model = build_lstm_model(window_size, dropout)
+    model = setup_model(window_size, dropout)
     opt_state = Flux.setup(ADAMW(lr), model)
 
     for epoch in 1:epochs
@@ -160,7 +159,7 @@ end
 ```
 ---------------------------------- EVALUATION ----------------------------------
 ```
-function compute_metrics(filename:: String, y_true::Vector{Int}, y_pred::BitVector)
+function calc_metrics(filename:: String, y_true::Vector{Int}, y_pred::BitVector)
     TP = sum((y_true .== 1) .& (y_pred .== true))
     FP = sum((y_true .== 0) .& (y_pred .== true))
     FN = sum((y_true .== 1) .& (y_pred .== false))
@@ -172,8 +171,8 @@ function compute_metrics(filename:: String, y_true::Vector{Int}, y_pred::BitVect
     println("\nEvaluation Metrics for $filename")
     println("TP = $TP | FP = $FP | FN = $FN")
     println("Precision: $(round(precision * 100, digits=2))%")
-    println("Recall:    $(round(recall * 100, digits=2))%")
-    println("F1 Score:  $(round(f1 * 100, digits=2))%")
+    println("Recall: $(round(recall * 100, digits=2))%")
+    println("F1 Score: $(round(f1 * 100, digits=2))%")
 
     return (;precision, recall, f1, TP, FP, FN)
 end
@@ -235,9 +234,9 @@ for filename in all_files
     clean_data = split_and_normalize(values, labels, train_ratio, calib_ratio)
 
     # Create sequences
-    x_train, y_train = create_sequences(clean_data.train_values, clean_data.train_labels, window_size)
-    x_calib, y_calib = create_sequences(clean_data.calib_values, clean_data.calib_labels, window_size)
-    x_test, y_test = create_sequences(clean_data.test_values, clean_data.test_labels, window_size)
+    x_train, y_train = split_windows(clean_data.train_values, clean_data.train_labels, window_size)
+    x_calib, y_calib = split_windows(clean_data.calib_values, clean_data.calib_labels, window_size)
+    x_test, y_test = split_windows(clean_data.test_values, clean_data.test_labels, window_size)
 
     # Train model
     model = train_model(
@@ -260,7 +259,7 @@ for filename in all_files
     # Evaluation
     y_true = Int.(vec(y_test))
     y_pred = vec(y_pred_class)
-    metrics = compute_metrics(filename, y_true, y_pred)
+    metrics = calc_metrics(filename, y_true, y_pred)
 
     # Save metrics
     save_metrics(filename, metrics)

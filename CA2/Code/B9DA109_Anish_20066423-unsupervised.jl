@@ -66,7 +66,7 @@ end
 ```
 ---------------------------------- DATA SEQUENCING ----------------------------------
 ```
-function create_sequences(values::Vector{Float32}, window_size::Int)
+function split_windows(values::Vector{Float32}, window_size::Int)
     n_seq = length(values) - window_size
     x = Array{Float32}(undef, window_size, 1, n_seq)
     y = Array{Float32}(undef, 1, n_seq)
@@ -82,7 +82,7 @@ end
 ```
 ---------------------------------- MODEL TRAINING ----------------------------------
 ```
-function build_lstm_model(window_size::Int, dropout::Float64)
+function setup_model(window_size::Int, dropout::Float64)
     return Chain(
         LSTM(window_size => 64),
         Dropout(dropout),
@@ -93,7 +93,7 @@ end
 function train_model(x_train::Array{Float32, 3}, y_train::Array{Float32,2};
     window_size::Int, epochs::Int, lr::Float64, dropout::Float64)
 
-    model = build_lstm_model(window_size, dropout)
+    model = setup_model(window_size, dropout)
     opt_state = Flux.setup(ADAMW(lr), model)
 
     for epoch in 1:epochs
@@ -105,7 +105,7 @@ function train_model(x_train::Array{Float32, 3}, y_train::Array{Float32,2};
             Flux.Losses.mse(y_pred, y_train)
         end
 
-        Flux.Optimise.update!(opt_state, model, grads[1])
+        Flux.update!(opt_state, model, grads[1])
         println("Epoch $epoch -- Loss = $(round(loss, digits=4))")
     end
 
@@ -158,12 +158,11 @@ end
 function load_true_labels(label_path::String, file_key::String,
     eval_timestamps::Vector{DateTime})
 
-    label_data = JSON.parsefile(label_path)
-    windows = label_data[file_key]
+    labels = JSON.parsefile(label_path)
+    windows = labels[file_key]
 
-    datetime_format = dateformat"yyyy-MM-dd HH:MM:SS.ssss"
-    anomaly_windows = [(DateTime(w[1], datetime_format), 
-    DateTime(w[2], datetime_format)) for w in windows]
+    anomaly_windows = [(DateTime(w[1], dateformat"yyyy-MM-dd HH:MM:SS.ssss"), 
+    DateTime(w[2], dateformat"yyyy-MM-dd HH:MM:SS.ssss")) for w in windows]
 
     true_flags = Int[]
     for ts in eval_timestamps
@@ -174,7 +173,7 @@ function load_true_labels(label_path::String, file_key::String,
     return true_flags
 end
 
-function compute_metrics(filename::String, pred_flags::Vector{Int}, true_flags::Vector{Int})
+function calc_metrics(filename::String, pred_flags::Vector{Int}, true_flags::Vector{Int})
     TP = sum((pred_flags .== 1) .& (true_flags .== 1))
     FP = sum((pred_flags .== 1) .& (true_flags .== 0))
     FN = sum((pred_flags .== 0) .& (true_flags .== 1))
@@ -185,9 +184,9 @@ function compute_metrics(filename::String, pred_flags::Vector{Int}, true_flags::
 
     println("\nEvaluation Metrics for $filename")
     println("TP = $TP | FP = $FP | FN = $FN")
-    println("Precision = $(round(precision * 100, digits=2))%")
-    println("Recall    = $(round(recall * 100, digits=2))%")
-    println("F1 Score  = $(round(f1 * 100, digits=2))%")
+    println("Precision: $(round(precision * 100, digits=2))%")
+    println("Recall: $(round(recall * 100, digits=2))%")
+    println("F1 Score: $(round(f1 * 100, digits=2))%")
 
     return (;precision, recall, f1, TP, FP, FN)
 end
@@ -256,9 +255,9 @@ for filename in all_files
     train_data, calib_data, eval_data = split_and_normalize(values, probation_ratio, calib_ratio)
 
     # Create sequences
-    x_train, y_train = create_sequences(train_data, window_size)
-    x_calib, y_calib = create_sequences(calib_data, window_size)
-    x_eval,  y_eval  = create_sequences(eval_data,  window_size)
+    x_train, y_train = split_windows(train_data, window_size)
+    x_calib, y_calib = split_windows(calib_data, window_size)
+    x_eval,  y_eval  = split_windows(eval_data,  window_size)
 
     # Train model
     model = train_model(
@@ -287,7 +286,7 @@ for filename in all_files
     ts_eval = ts[n_prob + window_size + 1 : end]
 
     true_flags = load_true_labels(label_path, filename, ts_eval)
-    metrics = compute_metrics(filename, eval_results.anomaly_flags, true_flags)
+    metrics = calc_metrics(filename, eval_results.anomaly_flags, true_flags)
 
     # Save model & metrics
     # save_model(model, filename)
